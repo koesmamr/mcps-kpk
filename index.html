@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulir Pendataan Aset & Inventaris Pegawai - MCPS KPK</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center font-bold text-lg text-blue-300">
+          MCP
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight">MCPS KPK</h1>
+          <p class="text-xs text-blue-200">Formulir Pendataan Aset & Inventaris Pegawai</p>
+        </div>
+      </div>
+      <a href="https://docs.google.com/spreadsheets/d/1kucE7kAQ3wJ_XAQ9JefRaDaRE4W_uBe2ICOXuEwt1kA/edit?usp=sharing" 
+         target="_blank" 
+         class="inline-flex items-center text-xs font-medium bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition border border-white/20">
+        <svg class="w-4 h-4 mr-1.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        Buka Spreadsheet
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-4xl mx-auto px-4 mt-8">
+    
+    <!-- Hero / Pengantar -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+      <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Formulir Inventarisasi Aset Pegawai</h2>
+      <p class="text-slate-600 text-sm leading-relaxed">
+        Silakan isi data inventaris dan aset kedinasan yang Anda gunakan dengan lengkap dan benar. Unggah foto fisik aset (kendaraan, rumah dinas, peralatan kantor) sebagai bukti verifikasi.
+      </p>
+    </div>
+
+    <!-- Alert Status -->
+    <div id="alertBox" class="hidden mb-6 p-4 rounded-xl text-sm font-medium transition-all duration-300"></div>
+
+    <!-- Formulir -->
+    <form id="assetForm" class="space-y-6">
+
+      <!-- BAGIAN 1: IDENTITAS PEGAWAI -->
+      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">1</span>
+          <h3 class="text-lg font-bold text-slate-900">Identitas Pegawai</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <!-- Nama Pegawai -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              Nama Pegawai <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="namaPegawai" required
+              placeholder="Contoh: Budi Santoso, S.Kom."
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+          </div>
+
+          <!-- NIP / NIPPPK -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              NIP / NIPPPK <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="nip" required
+              placeholder="Contoh: 198501012010011001"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+          </div>
+
+          <!-- Jabatan -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              Jabatan <span class="text-rose-500">*</span>
+            </label>
+            <input type="text" id="jabatan" required
+              placeholder="Contoh: Analis Kebijakan Ahli Pertama"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+          </div>
+
+          <!-- Status Pegawai -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              Status Pegawai <span class="text-rose-500">*</span>
+            </label>
+            <select id="statusPegawai" required
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm bg-white">
+              <option value="">-- Pilih Status Pegawai --</option>
+              <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
+              <option value="PPPK">PPPK (Pegawai Pemerintah dengan Perjanjian Kerja)</option>
+              <option value="Honorer / Kontrak">Honorer / Pegawai Kontrak</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- BAGIAN 2: INVENTARIS KENDARAAN (R2 & R4) -->
+      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">2</span>
+          <h3 class="text-lg font-bold text-slate-900">Kendaraan Dinas</h3>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Kendaraan R2 -->
+          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="18.5" cy="17.5" r="3.5"></circle><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9.5 9l-4 3m9.5 5.5l3-9h3.5"></path></svg>
+              Kendaraan Roda 2 (R2)
+            </h4>
+            <p class="text-xs text-slate-500 mb-3">Tuliskan Merk, Type, dan Nomor Plat. (Isi tanda strip "-" jika tidak ada)</p>
+            <input type="text" id="kendaraanR2"
+              placeholder="Contoh: Honda Vario 125, Nopol: B 1234 ABC"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3">
+            
+            <!-- Upload Foto R2 -->
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Kendaraan R2 (Opsional):</label>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <input type="file" id="fileR2" accept="image/*"
+                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+              <div id="previewR2" class="hidden">
+                <img src="" alt="Preview R2" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+              </div>
+            </div>
+          </div>
+
+          <!-- Kendaraan R4 -->
+          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="7" rx="2"></rect><path d="M5 11l2-5h10l2 5M7 18v2m10-2v2"></path></svg>
+              Kendaraan Roda 4 (R4)
+            </h4>
+            <p class="text-xs text-slate-500 mb-3">Tuliskan Merk, Type, dan Nomor Plat. (Isi tanda strip "-" jika tidak ada)</p>
+            <input type="text" id="kendaraanR4"
+              placeholder="Contoh: Toyota Innova Reborn 2.4 G, Nopol: B 5678 XYZ"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3">
+            
+            <!-- Upload Foto R4 -->
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Kendaraan R4 (Opsional):</label>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <input type="file" id="fileR4" accept="image/*"
+                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+              <div id="previewR4" class="hidden">
+                <img src="" alt="Preview R4" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BAGIAN 3: RUMAH DINAS & PERALATAN KANTOR -->
+      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">3</span>
+          <h3 class="text-lg font-bold text-slate-900">Rumah Dinas & Peralatan Kantor</h3>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Rumah Dinas -->
+          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              Rumah Dinas: Nama / Jabatan / Alamat
+            </h4>
+            <p class="text-xs text-slate-500 mb-3">Tuliskan nama kompleks, nomor rumah, atau alamat lengkap. (Isi "-" jika tidak menempati)</p>
+            <textarea id="rumahDinas" rows="2"
+              placeholder="Contoh: Kompleks Dinas Jl. Merdeka No. 12, Kel. Maju, Jakarta Pusat"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3"></textarea>
+            
+            <!-- Upload Foto Rumah Dinas -->
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik / Kondisi Rumah Dinas (Opsional):</label>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <input type="file" id="fileRumah" accept="image/*"
+                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+              <div id="previewRumah" class="hidden">
+                <img src="" alt="Preview Rumah Dinas" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+              </div>
+            </div>
+          </div>
+
+          <!-- Peralatan Kantor -->
+          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
+            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              Peralatan Kantor: Merk, Type dan Tahun
+            </h4>
+            <p class="text-xs text-slate-500 mb-3">Tuliskan inventaris laptop / PC / printer dinas yang dipinjamkan. (Isi "-" jika tidak ada)</p>
+            <textarea id="peralatanKantor" rows="2"
+              placeholder="Contoh: Laptop Lenovo ThinkPad T14 Gen 2 (2022), Monitor Dell 24 inch (2021)"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3"></textarea>
+            
+            <!-- Upload Foto Peralatan Kantor -->
+            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Peralatan Kantor (Opsional):</label>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <input type="file" id="fileAlat" accept="image/*"
+                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+              <div id="previewAlat" class="hidden">
+                <img src="" alt="Preview Peralatan" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BAGIAN 4: PERNYATAAN & SUBMIT -->
+      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mb-6">
+          <div class="flex items-start space-x-3">
+            <input type="checkbox" id="pernyataan" required
+              class="mt-1 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <label for="pernyataan" class="text-xs sm:text-sm text-slate-700 font-medium leading-snug cursor-pointer">
+              Saya menyatakan dengan sesungguhnya bahwa data inventaris dan dokumen bukti yang saya sampaikan di atas adalah benar, sah, dan dapat dipertanggungjawabkan sesuai dengan ketentuan yang berlaku.
+            </label>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
+          <button type="reset" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">
+            Reset Formulir
+          </button>
+          <button type="submit" id="submitBtn"
+            class="w-full sm:w-auto px-8 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white text-sm font-bold shadow-md shadow-blue-500/20 transition flex items-center justify-center space-x-2">
+            <span id="btnText">Kirim Data Inventaris</span>
+            <svg id="btnSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+    </form>
+  </main>
+
+  <!-- Script Penanganan Frontend -->
+  <script>
+    // URL Endpoint Google Apps Script Web App
+    const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbysIm5SsVNSBDXoCmujJAmgib_iGJwDC87RxOP-fgY4zdgslNuJLIiHQ3rA4t6914iphA/exec';
+
+    // File Data Cache (Base64)
+    let fileBase64Map = {
+      fotoR2: '',
+      fotoR4: '',
+      fotoRumah: '',
+      fotoAlat: ''
+    };
+
+    // Helper: Kompres dan convert gambar ke Base64
+    function processImageFile(file, callback) {
+      if (!file) return callback('');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1200; // Resize resolusi jika terlalu besar agar upload kilat
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Kompresi kualitas JPEG 0.75
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+          callback(compressedDataUrl);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Setup input image handler
+    function bindImageInput(inputId, previewId, stateKey) {
+      const input = document.getElementById(inputId);
+      const previewContainer = document.getElementById(previewId);
+      const previewImg = previewContainer.querySelector('img');
+
+      input.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+          processImageFile(file, function(dataUrl) {
+            fileBase64Map[stateKey] = dataUrl;
+            previewImg.src = dataUrl;
+            previewContainer.classList.remove('hidden');
+          });
+        } else {
+          fileBase64Map[stateKey] = '';
+          previewContainer.classList.add('hidden');
+        }
+      });
+    }
+
+    bindImageInput('fileR2', 'previewR2', 'fotoR2');
+    bindImageInput('fileR4', 'previewR4', 'fotoR4');
+    bindImageInput('fileRumah', 'previewRumah', 'fotoRumah');
+    bindImageInput('fileAlat', 'previewAlat', 'fotoAlat');
+
+    // Handle Form Submit
+    const form = document.getElementById('assetForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const alertBox = document.getElementById('alertBox');
+
+    function showAlert(type, message) {
+      alertBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200', 'border');
+      if (type === 'success') {
+        alertBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'border');
+      } else {
+        alertBox.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200', 'border');
+      }
+      alertBox.innerHTML = message;
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!document.getElementById('pernyataan').checked) {
+        showAlert('error', 'Silakan centang pernyataan kebenaran data sebelum mengirim.');
+        return;
+      }
+
+      // Kunci tombol submit
+      submitBtn.disabled = true;
+      btnText.textContent = 'Menyimpan ke Google Drive & Sheets...';
+      btnSpinner.classList.remove('hidden');
+
+      const payload = {
+        namaPegawai: document.getElementById('namaPegawai').value.trim(),
+        nip: document.getElementById('nip').value.trim(),
+        jabatan: document.getElementById('jabatan').value.trim(),
+        statusPegawai: document.getElementById('statusPegawai').value,
+        kendaraanR2: document.getElementById('kendaraanR2').value.trim() || '-',
+        kendaraanR4: document.getElementById('kendaraanR4').value.trim() || '-',
+        rumahDinas: document.getElementById('rumahDinas').value.trim() || '-',
+        peralatanKantor: document.getElementById('peralatanKantor').value.trim() || '-',
+        pernyataan: 'Setuju / Benar (Telah diverifikasi)',
+        fotoR2: fileBase64Map.fotoR2,
+        fotoR4: fileBase64Map.fotoR4,
+        fotoRumah: fileBase64Map.fotoRumah,
+        fotoAlat: fileBase64Map.fotoAlat
+      };
+
+      try {
+        const response = await fetch(BACKEND_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          showAlert('success', '<strong>Berhasil!</strong> ' + result.message);
+          form.reset();
+          document.querySelectorAll('[id^=preview]').forEach(el => el.classList.add('hidden'));
+          fileBase64Map = { fotoR2: '', fotoR4: '', fotoRumah: '', fotoAlat: '' };
+        } else {
+          showAlert('error', '<strong>Pemberitahuan:</strong> ' + result.message);
+        }
+      } catch (err) {
+        console.error(err);
+        // Bila CORS mode no-cors atau error jaringan
+        showAlert('error', 'Gagal menghubungi server. Pastikan Web App Google Apps Script telah diizinkan akses publik (Anyone). Detail error: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Kirim Data Inventaris';
+        btnSpinner.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
