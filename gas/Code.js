@@ -27,38 +27,127 @@ function doPost(e) {
     const fotoRumahUrl = data.fotoRumah ? saveBase64File(data.fotoRumah, 'Rumah_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : '';
     const fotoAlatUrl = data.fotoAlat ? saveBase64File(data.fotoAlat, 'Alat_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : '';
 
-    // 3. Format isian dengan menyertakan link foto jika ada
-    const r2Detail = formatFieldWithLink(data.kendaraanR2, fotoR2Url);
-    const r4Detail = formatFieldWithLink(data.kendaraanR4, fotoR4Url);
-    const rumahDetail = formatFieldWithLink(data.rumahDinas, fotoRumahUrl);
-    const alatDetail = formatFieldWithLink(data.peralatanKantor, fotoAlatUrl);
-
-    // 4. Buka Spreadsheet dan tulis baris baru
+    // 3. Buka Spreadsheet
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = ss.getSheets()[0]; // Ambil sheet pertama
+    
+    // Target sheet: cari sheet bernama 'Sheet1'
+    let sheet = ss.getSheetByName('Sheet1');
+    if (!sheet) {
+      sheet = ss.getSheets()[0];
+    }
 
-    // Format Timestamp
-    const timestamp = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm:ss');
+    // 4. Tentukan baris tujuan untuk mengisi data
+    // Baris data dimulai dari baris 9
+    // Format kolom:
+    // Kolom 1 (A): NO
+    // Kolom 2 (B): NAMA PEGAWAI
+    // Kolom 3 (C): JABATAN / STATUS PEGAWAI
+    // Kolom 4 (D): R2 (Merk, Type dan Plat Nomor)
+    // Kolom 5 (E): FOTO R2 (IMAGE formula)
+    // Kolom 6 (F): R4 (Merk, Type dan Plat Nomor)
+    // Kolom 7 (G): FOTO R4 (IMAGE formula)
+    // Kolom 8 (H): Rumah Dinas (Nama / Alamat)
+    // Kolom 9 (I): FOTO RUMAH (IMAGE formula)
+    // Kolom 10 (J): Peralatan Kantor (Merk, Type, Tahun)
+    // Kolom 11 (K): FOTO PERALATAN (IMAGE formula)
+    // Kolom 12 (L): TANDA TANGAN (No. urut ttd)
 
-    const row = [
-      timestamp,
-      data.namaPegawai || '',
-      data.nip || '',
-      data.jabatan || '',
-      data.statusPegawai || '',
-      r2Detail,
-      r4Detail,
-      rumahDetail,
-      alatDetail,
-      data.pernyataan || 'Setuju / Benar'
-    ];
+    let targetRow = 9;
+    const maxRows = sheet.getMaxRows();
+    
+    // Cari baris pertama yang Kolom B (Nama Pegawai) kosong atau berisi dummy XXXX pada baris 9-10
+    while (targetRow <= maxRows) {
+      const valB = sheet.getRange(targetRow, 2).getValue().toString().trim();
+      if (!valB || valB === 'XXXX') {
+        break;
+      }
+      targetRow++;
+    }
 
-    sheet.appendRow(row);
+    // Jika melebihi baris yang ada, tambah baris
+    if (targetRow > maxRows) {
+      sheet.insertRowAfter(maxRows);
+    }
+
+    // Hitung nomor urut
+    const nomorUrut = targetRow - 8;
+
+    // Gabungkan Jabatan dan Status Pegawai jika perlu
+    const jabatanStatus = (data.jabatan || '') + (data.statusPegawai ? '\n' + data.statusPegawai : '');
+
+    // Siapkan formula IMAGE untuk menampilkan foto di cell
+    const formulaR2 = fotoR2Url ? '=IMAGE(\"' + getDirectImageUrl(fotoR2Url) + '\", 1)' : '';
+    const formulaR4 = fotoR4Url ? '=IMAGE(\"' + getDirectImageUrl(fotoR4Url) + '\", 1)' : '';
+    const formulaRumah = fotoRumahUrl ? '=IMAGE(\"' + getDirectImageUrl(fotoRumahUrl) + '\", 1)' : '';
+    const formulaAlat = fotoAlatUrl ? '=IMAGE(\"' + getDirectImageUrl(fotoAlatUrl) + '\", 1)' : '';
+
+    // Isi sel data
+    sheet.getRange(targetRow, 1).setValue(nomorUrut);
+    sheet.getRange(targetRow, 2).setValue(data.namaPegawai || '');
+    sheet.getRange(targetRow, 3).setValue(jabatanStatus);
+    sheet.getRange(targetRow, 4).setValue(data.kendaraanR2 || '-');
+    if (formulaR2) {
+      sheet.getRange(targetRow, 5).setFormula(formulaR2);
+    } else {
+      sheet.getRange(targetRow, 5).setValue('-');
+    }
+
+    sheet.getRange(targetRow, 6).setValue(data.kendaraanR4 || '-');
+    if (formulaR4) {
+      sheet.getRange(targetRow, 7).setFormula(formulaR4);
+    } else {
+      sheet.getRange(targetRow, 7).setValue('-');
+    }
+
+    sheet.getRange(targetRow, 8).setValue(data.rumahDinas || '-');
+    if (formulaRumah) {
+      sheet.getRange(targetRow, 9).setFormula(formulaRumah);
+    } else {
+      sheet.getRange(targetRow, 9).setValue('-');
+    }
+
+    sheet.getRange(targetRow, 10).setValue(data.peralatanKantor || '-');
+    if (formulaAlat) {
+      sheet.getRange(targetRow, 11).setFormula(formulaAlat);
+    } else {
+      sheet.getRange(targetRow, 11).setValue('-');
+    }
+
+    // Kolom tanda tangan
+    sheet.getRange(targetRow, 12).setValue(nomorUrut + '...............');
+
+    // Atur tinggi baris agar foto terlihat proporsional dan jelas (tinggi 95-100px)
+    sheet.setRowHeight(targetRow, 100);
+
+    // Atur perataan vertikal ke tengah
+    sheet.getRange(targetRow, 1, 1, 12).setVerticalAlignment('middle');
+
+    // Catat juga ke tab 'Jawaban Formulir 1' jika ada sebagai arsip raw
+    const responseSheet = ss.getSheetByName('Jawaban Formulir 1');
+    if (responseSheet) {
+      const timestamp = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm:ss');
+      responseSheet.appendRow([
+        timestamp,
+        data.namaPegawai || '',
+        data.nip || '',
+        data.jabatan || '',
+        data.statusPegawai || '',
+        data.kendaraanR2 || '',
+        data.kendaraanR4 || '',
+        data.rumahDinas || '',
+        data.peralatanKantor || '',
+        data.pernyataan || 'Setuju / Benar',
+        fotoR2Url,
+        fotoR4Url,
+        fotoRumahUrl,
+        fotoAlatUrl
+      ]);
+    }
 
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
-      message: 'Data dan dokumen berhasil disimpan ke Google Sheets & Google Drive!',
-      timestamp: timestamp
+      message: 'Data dan foto berhasil disimpan langsung ke dalam tabel Sheet1 baris ' + targetRow + '!',
+      row: targetRow
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (err) {
@@ -70,15 +159,15 @@ function doPost(e) {
 }
 
 /**
- * Gabungkan keterangan aset dengan link foto jika tersedia
+ * Ubah Google Drive sharing URL ke direct content URL agar fungsi =IMAGE(...) dapat menampilkan foto
  */
-function formatFieldWithLink(text, fileUrl) {
-  const keterangan = (text || '').trim();
-  if (!keterangan && !fileUrl) return '-';
-  if (keterangan && fileUrl) {
-    return keterangan + '\nFoto: ' + fileUrl;
+function getDirectImageUrl(driveUrl) {
+  if (!driveUrl) return '';
+  const match = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match && match[1]) {
+    return 'https://lh3.googleusercontent.com/d/' + match[1];
   }
-  return keterangan || ('Foto: ' + fileUrl);
+  return driveUrl;
 }
 
 /**
@@ -86,12 +175,10 @@ function formatFieldWithLink(text, fileUrl) {
  */
 function saveBase64File(base64DataUrl, fileNamePrefix, folder) {
   try {
-    // base64DataUrl format: "data:image/jpeg;base64,/9j/4AAQSkZ..."
     const parts = base64DataUrl.split(',');
     const meta = parts[0];
     const base64Str = parts[1];
     
-    // Deteksi mime type dan ekstensi
     let mimeType = 'image/jpeg';
     let ext = '.jpg';
     if (meta.indexOf('image/png') !== -1) {
@@ -100,21 +187,18 @@ function saveBase64File(base64DataUrl, fileNamePrefix, folder) {
     } else if (meta.indexOf('image/webp') !== -1) {
       mimeType = 'image/webp';
       ext = '.webp';
-    } else if (meta.indexOf('application/pdf') !== -1) {
-      mimeType = 'application/pdf';
-      ext = '.pdf';
     }
 
     const decoded = Utilities.base64Decode(base64Str);
     const blob = Utilities.newBlob(decoded, mimeType, fileNamePrefix + ext);
     const file = folder.createFile(blob);
     
-    // Set permission agar file bisa dilihat oleh siapapun yang memiliki tautan
+    // Set permission agar foto dapat dirender oleh rumus =IMAGE()
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     
     return file.getUrl();
   } catch (e) {
-    return 'Gagal upload file: ' + e.message;
+    return '';
   }
 }
 
