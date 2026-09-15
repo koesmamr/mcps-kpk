@@ -1,5 +1,5 @@
-﻿const SPREADSHEET_ID = '1kucE7kAQ3wJ_XAQ9JefRaDaRE4W_uBe2ICOXuEwt1kA';
-const FOLDER_NAME = 'Uploads_MCPS_KPK';
+﻿const SPREADSHEET_ID = '1pbXNUIck_2nlKmVPltYkyfwHP-99i8iztjHw57ehP0k';
+const FOLDER_ID = '19gMa6kFzEjO3UfMlvl8I44Nl8u-qPNtt';
 
 /**
  * Handle HTTP GET request (untuk test status API)
@@ -7,8 +7,88 @@ const FOLDER_NAME = 'Uploads_MCPS_KPK';
 function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({
     status: 'success',
-    message: 'Backend API MCPS KPK siap digunakan.'
+    message: 'Backend API MCPS KPK (koesmamr@gmail.com) siap digunakan.'
   })).setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Inisialisasi struktur sheet dan tabel
+ */
+function initSheetStructure() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('Sheet1');
+  if (!sheet) {
+    sheet = ss.getSheets()[0];
+    sheet.setName('Sheet1');
+  }
+
+  // Set judul & header jika masih kosong
+  if (sheet.getRange(1, 1).getValue() === '') {
+    sheet.getRange('A1:L1').merge().setValue('LAMPIRAN BERITA ACARA PAKTA INTEGRITAS').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('A2:L2').merge().setValue('PENGGUNAAN BARANG BARANG MILIK DAERAH').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('A3:L3').merge().setValue('BADAN/DINAS/KANTOR/KECAMATAN/UPT.................... KAB TUBAN').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('A4:L4').merge().setValue('PEMENUHAN MCSP KPK-RI TAHUN 2026').setFontWeight('bold').setHorizontalAlignment('center');
+
+    // Header Tabel Baris 6 - 8
+    sheet.getRange('A6:A8').merge().setValue('NO').setFontWeight('bold').setHorizontalAlignment('center').setVerticalAlignment('middle');
+    sheet.getRange('B6:B8').merge().setValue('NAMA PEGAWAI').setFontWeight('bold').setHorizontalAlignment('center').setVerticalAlignment('middle');
+    sheet.getRange('C6:C7').merge().setValue('JABATAN/').setFontWeight('bold').setHorizontalAlignment('center').setVerticalAlignment('middle');
+    sheet.getRange('C8').setValue('STATUS PEGAWAI').setFontWeight('bold').setHorizontalAlignment('center');
+
+    sheet.getRange('D6:K6').merge().setValue('PENGGUNAAN BARANG MILIK DAERAH').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('D7:E7').merge().setValue('Kendaraan Dinas R2').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('D8').setValue('Merk, Type dan Plat Nomor').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('E8').setValue('Foto').setFontWeight('bold').setHorizontalAlignment('center');
+
+    sheet.getRange('F7:G7').merge().setValue('Kendaraan Dinas R4').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('F8').setValue('Merk, Type dan Plat Nomor').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('G8').setValue('Foto').setFontWeight('bold').setHorizontalAlignment('center');
+
+    sheet.getRange('H7:I7').merge().setValue('Rumah Dinas').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('H8').setValue('Rumah Jabatan / Alamat').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('I8').setValue('Foto').setFontWeight('bold').setHorizontalAlignment('center');
+
+    sheet.getRange('J7:K7').merge().setValue('Peralatan Kantor').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('J8').setValue('Merk, Type dan Tahun').setFontWeight('bold').setHorizontalAlignment('center');
+    sheet.getRange('K8').setValue('Foto').setFontWeight('bold').setHorizontalAlignment('center');
+
+    sheet.getRange('L6:L8').merge().setValue('TANDA TANGAN').setFontWeight('bold').setHorizontalAlignment('center').setVerticalAlignment('middle');
+
+    sheet.setColumnWidth(1, 45);   // No
+    sheet.setColumnWidth(2, 200);  // Nama
+    sheet.setColumnWidth(3, 180);  // Jabatan / Status
+    sheet.setColumnWidth(4, 180);  // R2
+    sheet.setColumnWidth(5, 140);  // Foto R2
+    sheet.setColumnWidth(6, 180);  // R4
+    sheet.setColumnWidth(7, 140);  // Foto R4
+    sheet.setColumnWidth(8, 200);  // Rumah Dinas
+    sheet.setColumnWidth(9, 140);  // Foto Rumah
+    sheet.setColumnWidth(10, 200); // Alat Kantor
+    sheet.setColumnWidth(11, 140); // Foto Alat
+    sheet.setColumnWidth(12, 130); // TTD
+  }
+
+  // Pastikan ada sheet Response/Raw
+  let responseSheet = ss.getSheetByName('Jawaban Formulir 1');
+  if (!responseSheet) {
+    responseSheet = ss.insertSheet('Jawaban Formulir 1');
+    responseSheet.appendRow([
+      'Cap waktu',
+      'Nama Pegawai',
+      'NIP / NIPPPK',
+      'Jabatan',
+      'Status Pegawai',
+      'Kendaraan R2: Merk, Type dan Plat Nomor',
+      'Kendaraan R4: Merk, Type dan Plat Nomor',
+      'Rumah Dinas: Nama / Jabatan / Alamat',
+      'Peralatan Kantor: Merk, Type dan Tahun',
+      'Pernyataan Kebenaran Data',
+      'Link Foto R2',
+      'Link Foto R4',
+      'Link Foto Rumah Dinas',
+      'Link Foto Alat Kantor'
+    ]);
+  }
 }
 
 /**
@@ -16,52 +96,41 @@ function doGet(e) {
  */
 function doPost(e) {
   try {
+    initSheetStructure();
+
     const data = JSON.parse(e.postData.contents);
-    
-    // 1. Ambil atau Buat Folder Penyimpanan di Google Drive
-    const targetFolder = getOrCreateFolder(FOLDER_NAME);
-    
-    // 2. Upload file foto jika ada dan dapatkan objek File
+    const targetFolder = DriveApp.getFolderById(FOLDER_ID);
+
+    // 1. Upload file foto jika ada
     const fileR2 = data.fotoR2 ? saveBase64File(data.fotoR2, 'R2_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : null;
     const fileR4 = data.fotoR4 ? saveBase64File(data.fotoR4, 'R4_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : null;
     const fileRumah = data.fotoRumah ? saveBase64File(data.fotoRumah, 'Rumah_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : null;
     const fileAlat = data.fotoAlat ? saveBase64File(data.fotoAlat, 'Alat_' + sanitize(data.namaPegawai) + '_' + Date.now(), targetFolder) : null;
 
-    // 3. Buka Spreadsheet
+    // 2. Buka Spreadsheet
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    
-    // Target sheet: cari sheet bernama 'Sheet1'
-    let sheet = ss.getSheetByName('Sheet1');
-    if (!sheet) {
-      sheet = ss.getSheets()[0];
-    }
+    const sheet = ss.getSheetByName('Sheet1') || ss.getSheets()[0];
 
-    // 4. Tentukan baris tujuan untuk mengisi data
-    // Baris data dimulai dari baris 9
+    // 3. Tentukan baris data (mulai dari baris 9)
     let targetRow = 9;
     const maxRows = sheet.getMaxRows();
     
-    // Cari baris pertama yang Kolom B (Nama Pegawai) kosong atau berisi dummy awal
     while (targetRow <= maxRows) {
       const valB = sheet.getRange(targetRow, 2).getValue().toString().trim();
-      if (!valB || valB === 'XXXX' || valB === 'TEST VERIFIKASI SISTEM' || valB === 'Contoh Pegawai Uji Coba') {
+      if (!valB || valB === 'XXXX') {
         break;
       }
       targetRow++;
     }
 
-    // Jika melebihi baris yang ada, tambah baris
     if (targetRow > maxRows) {
       sheet.insertRowAfter(maxRows);
     }
 
-    // Hitung nomor urut
     const nomorUrut = targetRow - 8;
-
-    // Gabungkan Jabatan dan Status Pegawai
     const jabatanStatus = (data.jabatan || '') + (data.statusPegawai ? '\n' + data.statusPegawai : '');
 
-    // Isi sel data teks
+    // 4. Masukkan data teks
     sheet.getRange(targetRow, 1).setValue(nomorUrut);
     sheet.getRange(targetRow, 2).setValue(data.namaPegawai || '');
     sheet.getRange(targetRow, 3).setValue(jabatanStatus);
@@ -71,19 +140,17 @@ function doPost(e) {
     sheet.getRange(targetRow, 10).setValue(data.peralatanKantor || '-');
     sheet.getRange(targetRow, 12).setValue(nomorUrut + '...............');
 
-    // Masukkan foto langsung ke dalam sel (In-Cell Image)
+    // 5. Masukkan foto langsung ke dalam sel (In-Cell Image)
     insertImageIntoCell(sheet, targetRow, 5, fileR2);
     insertImageIntoCell(sheet, targetRow, 7, fileR4);
     insertImageIntoCell(sheet, targetRow, 9, fileRumah);
     insertImageIntoCell(sheet, targetRow, 11, fileAlat);
 
-    // Atur tinggi baris agar foto terlihat proporsional dan jelas
+    // Styling baris data
     sheet.setRowHeight(targetRow, 100);
-
-    // Atur perataan vertikal ke tengah
     sheet.getRange(targetRow, 1, 1, 12).setVerticalAlignment('middle');
 
-    // Catat juga ke tab 'Jawaban Formulir 1' jika ada sebagai arsip raw
+    // 6. Simpan arsip raw ke tab 'Jawaban Formulir 1'
     const responseSheet = ss.getSheetByName('Jawaban Formulir 1');
     if (responseSheet) {
       const timestamp = Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm:ss');
@@ -107,7 +174,7 @@ function doPost(e) {
 
     return ContentService.createTextOutput(JSON.stringify({
       status: 'success',
-      message: 'Data dan foto berhasil masuk ke dalam cell Sheet1 baris ' + targetRow + '!',
+      message: 'Data dan foto berhasil disimpan di spreadsheet akun koesmamr@gmail.com (baris ' + targetRow + ')!',
       row: targetRow
     })).setMimeType(ContentService.MimeType.JSON);
 
@@ -137,13 +204,12 @@ function insertImageIntoCell(sheet, row, col, file) {
       .build();
     cell.setValue(cellImage);
   } catch (err) {
-    // Fallback: rumus HYPERLINK ke foto di Google Drive
     cell.setFormula('=HYPERLINK(\"' + file.getUrl() + '\", \"Lihat Foto\")');
   }
 }
 
 /**
- * Simpan file Base64 ke folder Google Drive dan jadikan link dapat diakses
+ * Simpan file Base64 ke folder Google Drive
  */
 function saveBase64File(base64DataUrl, fileNamePrefix, folder) {
   try {
@@ -170,17 +236,6 @@ function saveBase64File(base64DataUrl, fileNamePrefix, folder) {
   } catch (e) {
     return null;
   }
-}
-
-/**
- * Dapatkan folder Google Drive, atau buat jika belum ada
- */
-function getOrCreateFolder(folderName) {
-  const folders = DriveApp.getFoldersByName(folderName);
-  if (folders.hasNext()) {
-    return folders.next();
-  }
-  return DriveApp.createFolder(folderName);
 }
 
 function sanitize(str) {
