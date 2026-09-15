@@ -1,4 +1,4 @@
-﻿const SPREADSHEET_ID = '1pbXNUIck_2nlKmVPltYkyfwHP-99i8iztjHw57ehP0k';
+const SPREADSHEET_ID = '1pbXNUIck_2nlKmVPltYkyfwHP-99i8iztjHw57ehP0k';
 const FOLDER_ID = '19gMa6kFzEjO3UfMlvl8I44Nl8u-qPNtt';
 
 /**
@@ -198,13 +198,9 @@ function insertImageIntoCell(sheet, row, col, file) {
 
   try {
     const directUrl = 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1000';
-    const cellImage = SpreadsheetApp.newCellImage()
-      .setSourceUrl(directUrl)
-      .setAltTextTitle('Foto Bukti Fisik')
-      .build();
-    cell.setValue(cellImage);
+    cell.setFormula('=IMAGE("' + directUrl + '")');
   } catch (err) {
-    cell.setFormula('=HYPERLINK(\"' + file.getUrl() + '\", \"Lihat Foto\")');
+    cell.setFormula('=HYPERLINK("' + file.getUrl() + '", "Lihat Foto")');
   }
 }
 
