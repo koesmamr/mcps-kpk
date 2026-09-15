@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -6,104 +6,128 @@
   <title>Formulir Pendataan Aset & Inventaris Pegawai - MCPS KPK</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- SweetAlert2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+    .input-focus {
+      transition: all 0.2s ease-in-out;
+    }
+    .input-focus:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+<body class="bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50/40 text-slate-800 min-h-screen pb-16 antialiased">
 
-  <!-- Header Banner -->
-  <header class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-4xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center font-bold text-lg text-blue-300">
-          MCP
+  <!-- Header Banner Professional -->
+  <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white shadow-xl border-b border-white/10 sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-500/30 flex items-center justify-center font-extrabold text-sm tracking-wider text-white border border-white/20">
+          KPK
         </div>
         <div>
-          <h1 class="text-lg sm:text-xl font-bold tracking-tight">MCPS KPK</h1>
-          <p class="text-xs text-blue-200">Formulir Pendataan Aset & Inventaris Pegawai</p>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">MCPS KPK</h1>
+            <span class="bg-blue-500/20 text-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-400/30">TAHUN 2026</span>
+          </div>
+          <p class="text-xs text-slate-300">Formulir Pakta Integritas & Inventarisasi Barang Milik Daerah</p>
         </div>
       </div>
-      <a href="https://docs.google.com/spreadsheets/d/1pbXNUIck_2nlKmVPltYkyfwHP-99i8iztjHw57ehP0k/edit?usp=sharing" 
-         target="_blank" 
-         class="inline-flex items-center text-xs font-medium bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg transition border border-white/20">
-        <svg class="w-4 h-4 mr-1.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        Buka Spreadsheet
-      </a>
+      <div class="hidden sm:flex items-center text-xs text-slate-300 font-medium">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+        Sistem Terverifikasi
+      </div>
     </div>
   </header>
 
   <!-- Main Container -->
-  <main class="max-w-4xl mx-auto px-4 mt-8">
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 mt-8">
     
-    <!-- Hero / Pengantar -->
-    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
-      <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Formulir Inventarisasi Aset Pegawai</h2>
-      <p class="text-slate-600 text-sm leading-relaxed">
-        Silakan isi data inventaris dan aset kedinasan yang Anda gunakan dengan lengkap dan benar. Unggah foto fisik aset (kendaraan, rumah dinas, peralatan kantor) sebagai bukti verifikasi. Foto yang diunggah akan otomatis ditampilkan langsung ke dalam sel spreadsheet terkait.
-      </p>
+    <!-- Hero / Informasi Pengantar -->
+    <div class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 mb-7 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-blue-600 to-indigo-600"></div>
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Pendataan Aset & Inventaris Pegawai</h2>
+          <p class="text-slate-600 text-xs sm:text-sm mt-1.5 leading-relaxed max-w-2xl">
+            Lengkapi rincian aset kedinasan yang Anda pergunakan (Kendaraan Dinas R2/R4, Rumah Dinas, dan Peralatan Kantor). Harap lampirkan foto fisik aset sebagai bukti keabsahan dokumen verifikasi.
+          </p>
+        </div>
+        <div class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200/60 rounded-xl px-3.5 py-2 text-blue-700 text-xs font-semibold self-start md:self-center shrink-0">
+          <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          Wajib Diisi Pegawai
+        </div>
+      </div>
     </div>
 
-    <!-- Alert Status -->
-    <div id="alertBox" class="hidden mb-6 p-4 rounded-xl text-sm font-medium transition-all duration-300"></div>
-
-    <!-- Formulir -->
+    <!-- Formulir Utama -->
     <form id="assetForm" class="space-y-6">
 
       <!-- BAGIAN 1: IDENTITAS PEGAWAI -->
-      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
-          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">1</span>
-          <h3 class="text-lg font-bold text-slate-900">Identitas Pegawai</h3>
+      <section class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">1</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">Identitas Pegawai</h3>
+            <p class="text-xs text-slate-500">Data pribadi dan jabatan pengguna barang milik daerah</p>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <!-- Nama Pegawai -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-              Nama Pegawai <span class="text-rose-500">*</span>
+            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
+              Nama Lengkap Pegawai <span class="text-rose-500">*</span>
             </label>
             <input type="text" id="namaPegawai" required
               placeholder="Contoh: Budi Santoso, S.Kom."
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white placeholder:text-slate-400">
           </div>
 
           <!-- NIP / NIPPPK -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
               NIP / NIPPPK <span class="text-rose-500">*</span>
             </label>
             <input type="text" id="nip" required
               placeholder="Contoh: 198501012010011001"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white placeholder:text-slate-400">
           </div>
 
           <!-- Jabatan -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-              Jabatan <span class="text-rose-500">*</span>
+            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
+              Jabatan Kedinasan <span class="text-rose-500">*</span>
             </label>
             <input type="text" id="jabatan" required
               placeholder="Contoh: Analis Kebijakan Ahli Pertama"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm">
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white placeholder:text-slate-400">
           </div>
 
           <!-- Status Pegawai -->
           <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-              Status Pegawai <span class="text-rose-500">*</span>
+            <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1.5">
+              Status Kepegawaian <span class="text-rose-500">*</span>
             </label>
             <select id="statusPegawai" required
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm bg-white">
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white cursor-pointer">
               <option value="">-- Pilih Status Pegawai --</option>
               <option value="PNS">PNS (Pegawai Negeri Sipil)</option>
               <option value="PPPK">PPPK (Pegawai Pemerintah dengan Perjanjian Kerja)</option>
-              <option value="Honorer / Kontrak">Honorer / Pegawai Kontrak</option>
+              <option value="Honorer / Pegawai Kontrak">Honorer / Pegawai Kontrak</option>
               <option value="Lainnya">Lainnya</option>
             </select>
           </div>
@@ -111,53 +135,76 @@
       </section>
 
       <!-- BAGIAN 2: INVENTARIS KENDARAAN (R2 & R4) -->
-      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
-          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">2</span>
-          <h3 class="text-lg font-bold text-slate-900">Kendaraan Dinas</h3>
+      <section class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">2</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">Kendaraan Dinas</h3>
+            <p class="text-xs text-slate-500">Isi keterangan dan foto fisik kendaraan operasional</p>
+          </div>
         </div>
 
         <div class="space-y-6">
           <!-- Kendaraan R2 -->
-          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="18.5" cy="17.5" r="3.5"></circle><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9.5 9l-4 3m9.5 5.5l3-9h3.5"></path></svg>
-              Kendaraan Roda 2 (R2)
-            </h4>
-            <p class="text-xs text-slate-500 mb-3">Tuliskan Merk, Type, dan Nomor Plat. (Isi tanda strip "-" jika tidak ada)</p>
+          <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/90 transition hover:border-slate-300">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span class="p-1.5 bg-blue-100 text-blue-700 rounded-lg">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"></circle><circle cx="18.5" cy="17.5" r="3.5"></circle><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9.5 9l-4 3m9.5 5.5l3-9h3.5"></path></svg>
+                </span>
+                Kendaraan Roda 2 (R2)
+              </h4>
+              <span class="text-[11px] text-slate-500">Isi tanda "-" jika tidak ada</span>
+            </div>
+            
             <input type="text" id="kendaraanR2"
-              placeholder="Contoh: Honda Vario 125, Nopol: B 1234 ABC"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3">
+              placeholder="Contoh: Honda Vario 125, Nopol: S 1234 XY"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white mb-3 placeholder:text-slate-400">
             
             <!-- Upload Foto R2 -->
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Kendaraan R2 (Otomatis masuk ke cell foto):</label>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <input type="file" id="fileR2" accept="image/*"
-                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-              <div id="previewR2" class="hidden">
-                <img src="" alt="Preview R2" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-xs font-semibold text-slate-700">Foto Fisik R2 (Depan/Samping):</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="file" id="fileR2" accept="image/*"
+                  class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                <div id="previewR2" class="hidden shrink-0">
+                  <img src="" alt="Preview R2" class="h-12 w-16 object-cover rounded-lg border border-slate-300 shadow-xs">
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Kendaraan R4 -->
-          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="7" rx="2"></rect><path d="M5 11l2-5h10l2 5M7 18v2m10-2v2"></path></svg>
-              Kendaraan Roda 4 (R4)
-            </h4>
-            <p class="text-xs text-slate-500 mb-3">Tuliskan Merk, Type, dan Nomor Plat. (Isi tanda strip "-" jika tidak ada)</p>
+          <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/90 transition hover:border-slate-300">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span class="p-1.5 bg-blue-100 text-blue-700 rounded-lg">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="7" rx="2"></rect><path d="M5 11l2-5h10l2 5M7 18v2m10-2v2"></path></svg>
+                </span>
+                Kendaraan Roda 4 (R4)
+              </h4>
+              <span class="text-[11px] text-slate-500">Isi tanda "-" jika tidak ada</span>
+            </div>
+            
             <input type="text" id="kendaraanR4"
-              placeholder="Contoh: Toyota Innova Reborn 2.4 G, Nopol: B 5678 XYZ"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3">
+              placeholder="Contoh: Toyota Innova Reborn 2.4 G, Nopol: S 5678 AB"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white mb-3 placeholder:text-slate-400">
             
             <!-- Upload Foto R4 -->
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Kendaraan R4 (Otomatis masuk ke cell foto):</label>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <input type="file" id="fileR4" accept="image/*"
-                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-              <div id="previewR4" class="hidden">
-                <img src="" alt="Preview R4" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-5 h-5 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-xs font-semibold text-slate-700">Foto Fisik R4 (Tampak Depan/Plat):</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="file" id="fileR4" accept="image/*"
+                  class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+                <div id="previewR4" class="hidden shrink-0">
+                  <img src="" alt="Preview R4" class="h-12 w-16 object-cover rounded-lg border border-slate-300 shadow-xs">
+                </div>
               </div>
             </div>
           </div>
@@ -165,53 +212,76 @@
       </section>
 
       <!-- BAGIAN 3: RUMAH DINAS & PERALATAN KANTOR -->
-      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-        <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
-          <span class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">3</span>
-          <h3 class="text-lg font-bold text-slate-900">Rumah Dinas & Peralatan Kantor</h3>
+      <section class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="flex items-center space-x-3 border-b border-slate-100 pb-4 mb-6">
+          <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">3</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">Rumah Dinas & Peralatan Kantor</h3>
+            <p class="text-xs text-slate-500">Hunian dinas dan perangkat elektronik inventaris</p>
+          </div>
         </div>
 
         <div class="space-y-6">
           <!-- Rumah Dinas -->
-          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-              Rumah Dinas: Nama / Jabatan / Alamat
-            </h4>
-            <p class="text-xs text-slate-500 mb-3">Tuliskan nama kompleks, nomor rumah, atau alamat lengkap. (Isi "-" jika tidak menempati)</p>
+          <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/90 transition hover:border-slate-300">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span class="p-1.5 bg-emerald-100 text-emerald-700 rounded-lg">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                </span>
+                Rumah Dinas: Nama / Jabatan / Alamat
+              </h4>
+              <span class="text-[11px] text-slate-500">Isi tanda "-" jika tidak ada</span>
+            </div>
+
             <textarea id="rumahDinas" rows="2"
-              placeholder="Contoh: Kompleks Dinas Jl. Merdeka No. 12, Kel. Maju, Jakarta Pusat"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3"></textarea>
+              placeholder="Contoh: Rumah Dinas Dokter / Kompleks RSUD Jl. Dr. Wahidin No. 5"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white mb-3 placeholder:text-slate-400"></textarea>
             
             <!-- Upload Foto Rumah Dinas -->
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik / Kondisi Rumah Dinas (Otomatis masuk ke cell foto):</label>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <input type="file" id="fileRumah" accept="image/*"
-                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-              <div id="previewRumah" class="hidden">
-                <img src="" alt="Preview Rumah Dinas" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-xs font-semibold text-slate-700">Foto Fisik Rumah Dinas (Tampak Depan):</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="file" id="fileRumah" accept="image/*"
+                  class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                <div id="previewRumah" class="hidden shrink-0">
+                  <img src="" alt="Preview Rumah Dinas" class="h-12 w-16 object-cover rounded-lg border border-slate-300 shadow-xs">
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Peralatan Kantor -->
-          <div class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200/80">
-            <h4 class="font-bold text-slate-800 text-sm mb-1 flex items-center gap-2">
-              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-              Peralatan Kantor: Merk, Type dan Tahun
-            </h4>
-            <p class="text-xs text-slate-500 mb-3">Tuliskan inventaris laptop / PC / printer dinas yang dipinjamkan. (Isi "-" jika tidak ada)</p>
+          <div class="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/90 transition hover:border-slate-300">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span class="p-1.5 bg-emerald-100 text-emerald-700 rounded-lg">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </span>
+                Peralatan Kantor: Merk, Type dan Tahun
+              </h4>
+              <span class="text-[11px] text-slate-500">Isi tanda "-" jika tidak ada</span>
+            </div>
+
             <textarea id="peralatanKantor" rows="2"
-              placeholder="Contoh: Laptop Lenovo ThinkPad T14 Gen 2 (2022), Monitor Dell 24 inch (2021)"
-              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-white mb-3"></textarea>
+              placeholder="Contoh: Laptop Lenovo ThinkPad T14 Gen 2 (Tahun 2022), Printer Epson L3210"
+              class="w-full px-4 py-2.5 rounded-xl border border-slate-200 input-focus text-sm bg-white mb-3 placeholder:text-slate-400"></textarea>
             
             <!-- Upload Foto Peralatan Kantor -->
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Foto Bukti Fisik Peralatan Kantor (Otomatis masuk ke cell foto):</label>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <input type="file" id="fileAlat" accept="image/*"
-                class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
-              <div id="previewAlat" class="hidden">
-                <img src="" alt="Preview Peralatan" class="h-14 w-20 object-cover rounded-lg border border-slate-200 shadow-xs">
+            <div class="bg-white p-3.5 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5">
+                <svg class="w-5 h-5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                <span class="text-xs font-semibold text-slate-700">Foto Fisik Peralatan / Serial Number:</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="file" id="fileAlat" accept="image/*"
+                  class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
+                <div id="previewAlat" class="hidden shrink-0">
+                  <img src="" alt="Preview Peralatan" class="h-12 w-16 object-cover rounded-lg border border-slate-300 shadow-xs">
+                </div>
               </div>
             </div>
           </div>
@@ -219,24 +289,24 @@
       </section>
 
       <!-- BAGIAN 4: PERNYATAAN & SUBMIT -->
-      <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-        <div class="p-4 bg-amber-50 rounded-xl border border-amber-200 mb-6">
-          <div class="flex items-start space-x-3">
+      <section class="glass-card rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        <div class="p-4 sm:p-5 bg-amber-50/80 rounded-2xl border border-amber-200/80 mb-6">
+          <div class="flex items-start space-x-3.5">
             <input type="checkbox" id="pernyataan" required
-              class="mt-1 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-            <label for="pernyataan" class="text-xs sm:text-sm text-slate-700 font-medium leading-snug cursor-pointer">
-              Saya menyatakan dengan sesungguhnya bahwa data inventaris dan dokumen bukti yang saya sampaikan di atas adalah benar, sah, dan dapat dipertanggungjawabkan sesuai dengan ketentuan yang berlaku.
+              class="mt-1 h-4 w-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+            <label for="pernyataan" class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed cursor-pointer">
+              Saya menyatakan dengan sesungguhnya bahwa seluruh data inventaris dan dokumen fisik yang saya lampirkan adalah benar, sah, dan dapat dipertanggungjawabkan sesuai dengan ketentuan peraturan perundang-undangan.
             </label>
           </div>
         </div>
 
         <!-- Tombol Aksi -->
-        <div class="flex flex-col sm:flex-row items-center justify-end gap-3">
-          <button type="reset" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">
+        <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
+          <button type="reset" class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition cursor-pointer">
             Reset Formulir
           </button>
           <button type="submit" id="submitBtn"
-            class="w-full sm:w-auto px-8 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white text-sm font-bold shadow-md shadow-blue-500/20 transition flex items-center justify-center space-x-2">
+            class="w-full sm:w-auto px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.99] text-white text-sm font-bold shadow-lg shadow-blue-500/25 transition flex items-center justify-center space-x-2 cursor-pointer">
             <span id="btnText">Kirim Data Inventaris</span>
             <svg id="btnSpinner" class="hidden animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -248,6 +318,10 @@
 
     </form>
   </main>
+
+  <footer class="max-w-4xl mx-auto px-4 mt-8 text-center text-xs text-slate-400">
+    &copy; 2026 MCPS KPK-RI. Pemenuhan Tata Kelola Barang Milik Daerah.
+  </footer>
 
   <!-- Script Penanganan Frontend -->
   <script>
@@ -328,30 +402,46 @@
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
     const btnSpinner = document.getElementById('btnSpinner');
-    const alertBox = document.getElementById('alertBox');
-
-    function showAlert(type, message) {
-      alertBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'bg-rose-50', 'text-rose-800', 'border-rose-200', 'border');
-      if (type === 'success') {
-        alertBox.classList.add('bg-emerald-50', 'text-emerald-800', 'border-emerald-200', 'border');
-      } else {
-        alertBox.classList.add('bg-rose-50', 'text-rose-800', 'border-rose-200', 'border');
-      }
-      alertBox.innerHTML = message;
-      alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       if (!document.getElementById('pernyataan').checked) {
-        showAlert('error', 'Silakan centang pernyataan kebenaran data sebelum mengirim.');
+        Swal.fire({
+          icon: 'warning',
+          title: 'Perhatian',
+          text: 'Harap centang pernyataan kebenaran data terlebih dahulu.',
+          confirmButtonColor: '#2563eb'
+        });
         return;
       }
 
-      // Kunci tombol submit
+      // Konfirmasi sebelum pengiriman dengan SweetAlert2
+      const confirmResult = await Swal.fire({
+        title: 'Konfirmasi Pengiriman',
+        text: 'Pastikan data dan foto inventaris yang Anda masukkan sudah benar.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#2563eb',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Kirim Sekarang',
+        cancelButtonText: 'Periksa Kembali'
+      });
+
+      if (!confirmResult.isConfirmed) return;
+
+      // Loading State dengan SweetAlert2
+      Swal.fire({
+        title: 'Menyimpan Data...',
+        html: 'Sedang mengunggah berkas bukti fisik dan menyinkronkan data inventaris.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       submitBtn.disabled = true;
-      btnText.textContent = 'Menyimpan data dan menyematkan foto ke cell...';
+      btnText.textContent = 'Menyimpan...';
       btnSpinner.classList.remove('hidden');
 
       const payload = {
@@ -379,16 +469,32 @@
         const result = await response.json();
 
         if (result.status === 'success') {
-          showAlert('success', '<strong>Berhasil!</strong> ' + result.message);
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil Disimpan!',
+            text: 'Data inventaris dan bukti fisik aset Anda telah berhasil diverifikasi dan tersimpan dengan aman.',
+            confirmButtonColor: '#2563eb'
+          });
+
           form.reset();
           document.querySelectorAll('[id^=preview]').forEach(el => el.classList.add('hidden'));
           fileBase64Map = { fotoR2: '', fotoR4: '', fotoRumah: '', fotoAlat: '' };
         } else {
-          showAlert('error', '<strong>Pemberitahuan:</strong> ' + result.message);
+          Swal.fire({
+            icon: 'error',
+            title: 'Terjadi Kendala',
+            text: result.message || 'Gagal menyimpan data.',
+            confirmButtonColor: '#2563eb'
+          });
         }
       } catch (err) {
         console.error(err);
-        showAlert('error', 'Gagal menghubungi server. Detail: ' + err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Koneksi Terputus',
+          text: 'Gagal menghubungi server. Silakan periksa koneksi internet Anda atau coba sesaat lagi.',
+          confirmButtonColor: '#2563eb'
+        });
       } finally {
         submitBtn.disabled = false;
         btnText.textContent = 'Kirim Data Inventaris';
